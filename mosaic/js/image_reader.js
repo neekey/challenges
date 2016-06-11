@@ -83,30 +83,32 @@
             var file = this.files[0];
             var imageType = /^image\//;
 
-            if (!imageType.test(file.type)) {
-                return alert( 'Not a valid image file.');
+            if( file ){
+                if (!imageType.test(file.type)) {
+                    return alert( 'Not a valid image file.');
+                }
+
+                var img = new Image();
+                img.onload = function(){
+
+                    var result = getImageData( img );
+
+                    self._onloadCallback( {
+                        imageData: result.imageData,
+                        // note since the image is scaled to fit the stage size,
+                        // a new url is generated to replace the origin one.
+                        url: result.url
+                    });
+
+                    img = null;
+                };
+
+                var reader = new FileReader();
+                reader.onload = function( e ) {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
-
-            var img = new Image();
-            img.onload = function(){
-
-                var result = getImageData( img );
-
-                self._onloadCallback( {
-                    imageData: result.imageData,
-                    // note since the image is scaled to fit the stage size,
-                    // a new url is generated to replace the origin one.
-                    url: result.url
-                });
-
-                img = null;
-            };
-
-            var reader = new FileReader();
-            reader.onload = function( e ) {
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
         });
     }
 

@@ -74,7 +74,7 @@
         _loopTimer: null,
 
         // the max concurrency amount tile image loadings can be
-        _maxLoadingConcurrency: 5,
+        _maxLoadingConcurrency: 10,
 
         // tile groups need to be rendered
         _tilesGroups: {},

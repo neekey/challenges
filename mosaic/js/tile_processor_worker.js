@@ -1,6 +1,8 @@
 (function( host ){
     var taskInfo = null;
     var loopTimer = null;
+    // track all the task duration.
+    var durations = {};
 
     /**
      * start a new Task
@@ -22,6 +24,10 @@
             taskId: data.taskId
         };
 
+        console.log( '[worker] start new task, id: %d', data.taskId );
+
+        durations[ data.taskId ] = { start: Date.now() };
+
         loop();
     }
 
@@ -30,14 +36,39 @@
      */
     function loop(){
 
-        loopTimer = setTimeout(function(){
-            var result = processTask();
+        var max = 20000;
+        var count = 0;
+        // track loop time, kind of need to make sure this worker is fast but also responsive.
+        var loopStart = Date.now();
 
-            if( result ){
-                result.taskId = taskInfo.taskId;
-                response( 'tileProcessed', result );
+        loopTimer = setTimeout(function(){
+
+            while ( count < max ){
+                count++;
+
+                var result = processTask();
+
+                if( result.result ){
+                    response( 'tileProcessed', result.result );
+                }
+
+                if( result.finished ){
+                    break;
+                }
+            }
+
+            console.info( '[worker] A loop finished, duration: %d ms', Date.now() - loopStart );
+
+            if( result.finished ){
+                var duration = durations[ result.taskId ];
+                duration.end = Date.now();
+                duration.duration = ( duration.end - duration.start );
+                console.info( '[worker] Task %d Finished, duration: %d ms', result.taskId, duration.duration );
+            }
+            else {
                 loop();
             }
+
         }, 0);
     }
 
@@ -59,7 +90,8 @@
                     tile: currentTile,
                     groupEnd: groupEnd,
                     groupIndex: currentGroupIndex,
-                    tileIndex: taskInfo.currentTileIndex
+                    tileIndex: taskInfo.currentTileIndex,
+                    taskId: taskInfo.taskId
                 };
 
                 // move index to the next..
@@ -80,8 +112,8 @@
     }
 
     /**
-     * process next tile, if null returned, all the tiles are processed.
-     * @returns {{ groupEnd, averageColor, groupIndex, tileIndex, row, col }}
+     * process next tile return result.
+     * @returns { result: { groupEnd, averageColor, groupIndex, tileIndex, row, col }, finished: false }
      */
     function processTask(){
 
@@ -94,17 +126,25 @@
                 height: taskInfo.tileHeight
             }, tile.tile );
 
-            return {
-                groupEnd: tile.groupEnd,
-                averageColor: averageColor,
-                groupIndex: tile.groupIndex,
-                tileIndex: tile.tileIndex,
-                row: tile.tile.row,
-                col: tile.tile.col
+            return  {
+                result: {
+                    groupEnd: tile.groupEnd,
+                    averageColor: averageColor,
+                    groupIndex: tile.groupIndex,
+                    tileIndex: tile.tileIndex,
+                    row: tile.tile.row,
+                    col: tile.tile.col,
+                    taskId: tile.taskId
+                },
+                taskId: tile.taskId,
+                finished: false
             };
         }
         else {
-            return null;
+            return {
+                taskId: taskInfo.taskId,
+                finished: true
+            };
         }
     }
 

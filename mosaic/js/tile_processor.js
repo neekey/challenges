@@ -45,6 +45,20 @@
                     default:
                         break;
                 }
+            };
+
+            // error handle for worker
+            myWorker.onerror = function( e ){
+                console.error( 'Worker is down:', e );
+                myWorker.terminate();
+
+                setTimeout(function(){
+                    console.info( 'Try to restart the task' );
+                    var taskData = myWorker.taskData;
+                    worker = null;
+                    myWorker = null;
+                    sendMessage( 'start', taskData );
+                });
             }
         }
     }
@@ -56,6 +70,8 @@
      */
     function sendMessage( type, data ){
         initWorker(function( worker ){
+            // save task data, so that we can restart the task if the worker is down
+            worker.taskData = data;
             worker.postMessage({
                 type: type,
                 data: data
