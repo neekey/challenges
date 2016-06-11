@@ -1,0 +1,16 @@
+{
+  "author": "Canva",
+  "name": "mosaic",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node server.js & node ./node_modules/karma/bin/karma start test/karma.conf.js"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-mocha": "^1.0.1",
+    "mocha": "^2.5.3"
+  }
+}

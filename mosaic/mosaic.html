@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        background: #eee;
+        text-align: center;
+      }
+
+      #stage {
+        margin: auto;
+      }
+
+      #upload-area {
+        background: white;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+    </style>
+    <script type="text/javascript" src="js/mosaic.js"></script>
+    <script type="text/javascript" src="./js/image_reader.js"></script>
+    <script type="text/javascript" src="./js/tile_render.js"></script>
+    <script type="text/javascript" src="./js/tile_render_orders.js"></script>
+    <script type="text/javascript" src="./js/tile_processor.js"></script>
+    <script type="text/javascript" src="js/client.js"></script>
+    <title>Mosaic</title>
+  </head>
+  <body>
+    <!-- Edit me. -->
+
+    <section id="upload-area">
+      <label> Pick an image <input id="uploader" type="file"/></label>
+      <label> Render order:
+        <select id="render-order">
+          <option value="rowByRow" selected="selected">row by row</option>
+          <option value="colByCol">col by col</option>
+          <option value="rowByRowReverse">row by row(reverse)</option>
+          <option value="colByColReverse">col by col(reverse)</option>
+          <option value="rowSpread">row spread</option>
+          <option value="colSpread">col spread</option>
+        </select>
+      </label>
+
+      <span> Tile size:
+        <input id="tile-width" type="number" min="0" placeholder="width" value="16">
+        <input id="tile-height" type="number" min="0" placeholder="height" value="16">
+      </span>
+
+      <saan> Canvas max size:
+        <input id="max-width" type="number" min="0" placeholder="max width" value="800">
+        <input id="max-height" type="number" min="0" placeholder="max height" value="1000">
+      </saan>
+
+    </section>
+
+    <section id="stage">
+    </section>
+
+  </body>
+</html>
