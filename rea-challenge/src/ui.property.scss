@@ -1,0 +1,63 @@
+.property {
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+  background: white;
+  padding-bottom: 20px;
+
+  .agency {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+
+    .logo {
+      height: 30px;
+      line-height:40px;
+      vertical-align: middle;
+    }
+  }
+
+  .preview {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .price {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-family: arial;
+  }
+
+  .action {
+    text-align: center;
+    height: 25px;
+    div {
+      font-size: 14px;
+      line-height: 25px;
+      padding: 0 10px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      width: 50%;
+      display: none;
+
+      &.add {
+        background: #66b366;
+      }
+
+      &.remove {
+        background: #f36666;
+      }
+    }
+  }
+
+  &:hover {
+    .action div {
+      display: inline-block;
+    }
+  }
+}

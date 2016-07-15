@@ -1,0 +1,29 @@
+body {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  text-align: center;
+  background: #eee;
+}
+.main {
+  width: 1000px;
+  margin: auto;
+  font-size: 0;
+}
+.property-list {
+  font-size: 12px;
+  width: 40%;
+  display: inline-block;
+  box-sizing: border-box;
+  background: #dedede;
+  vertical-align: top;
+  margin: 0 10px;
+  min-height:100px;
+
+  .title {
+    margin: 0;
+    padding: 15px;
+    background: black;
+    color: white;
+  }
+}
